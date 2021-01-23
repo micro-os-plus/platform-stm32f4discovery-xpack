@@ -1,7 +1,7 @@
 {
   "name": "@micro-os-plus/platform-stm32f4discovery",
   "version": "0.1.0",
-  "description": "A source xPack with the STM32F407-DISC1 board support",
+  "description": "A source xPack with the STM32F4DISCOVERY board support",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
