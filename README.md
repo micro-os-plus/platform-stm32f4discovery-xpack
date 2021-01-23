@@ -84,7 +84,8 @@ The header file to be included in user project is:
 
 ### Preprocessor definitions
 
-- none required
+- `OS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE` to enable the `trace_printf()`
+  calls in `Error_Handler()` and `assert_failed()`.
 
 ### Compiler options
 
