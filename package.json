@@ -8,14 +8,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git"
+    "url": "git+https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git/"
   },
   "bugs": {
     "url": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/issues/"
   },
   "homepage": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/",
   "keywords": [
-    "xpack"
+    "xpack",
+    "c++",
+    "stm32f4discovery",
+    "board",
+    "micro-os-plus"
   ],
   "author": {
     "name": "Liviu Ionescu",
