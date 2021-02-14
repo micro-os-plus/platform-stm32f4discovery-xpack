@@ -101,7 +101,7 @@ function(target_sources_micro_os_plus_platform_stm32f4discovery_device target)
   target_sources(
     ${target}
 
-    PUBLIC
+    PRIVATE
       # ...
   )
 
