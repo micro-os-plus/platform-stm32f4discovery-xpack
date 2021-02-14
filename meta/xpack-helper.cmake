@@ -182,6 +182,7 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
 
   # ---------------------------------------------------------------------------
 
+if(true)
   if (NOT TARGET micro-os-plus-device-static)
 
     add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
@@ -209,6 +210,7 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
     )
 
   endif()
+endif()
 
   # ===========================================================================
 
@@ -239,6 +241,7 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
 
   # ---------------------------------------------------------------------------
 
+if(true)
   if (NOT micro-os-plus-platform-stm32f4discovery-static)
 
     add_library(micro-os-plus-platform-stm32f4discovery-static STATIC EXCLUDE_FROM_ALL)
@@ -258,7 +261,7 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
     )
 
   endif()
-
+endif()
   # ---------------------------------------------------------------------------
 
 endfunction()
