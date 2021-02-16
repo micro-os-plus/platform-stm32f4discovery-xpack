@@ -36,7 +36,7 @@ function(target_sources_micro_os_plus_platform_stm32f4discovery target)
     ${target}
 
     # PRIVATE fails with OBJECT, but ok with STATIC
-    PUBLIC # PRIVATE
+    PRIVATE
       ${xpack_current_folder}/stm32cubemx/Core/Src/gpio.c
       ${xpack_current_folder}/stm32cubemx/Core/Src/main.c
       ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
