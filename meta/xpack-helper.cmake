@@ -175,8 +175,6 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
       PUBLIC
         micro-os-plus::common
         micro-os-plus::devices-stm32f4-extras
-        micro-os-plus::semihosting
-        micro-os-plus::startup
     )
 
   endif()
