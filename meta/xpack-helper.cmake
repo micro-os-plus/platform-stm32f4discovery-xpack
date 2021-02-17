@@ -43,6 +43,7 @@ function(target_sources_micro_os_plus_platform_stm32f4discovery target)
       ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_it.c
       ${xpack_current_folder}/stm32cubemx/Core/Src/system_stm32f4xx.c
 
+      # HAL is in platform since it depends on generated stm32f4xx_hal_conf.h
       ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
       ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
       ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
