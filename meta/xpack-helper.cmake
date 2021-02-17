@@ -174,7 +174,6 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
       micro-os-plus-device-objects
 
       PUBLIC
-        micro-os-plus::common
         micro-os-plus::devices-stm32f4-extras
     )
 
@@ -203,7 +202,6 @@ if(true)
       micro-os-plus-device-static
 
       PUBLIC
-        micro-os-plus::common
         micro-os-plus::devices-stm32f4-extras-static
         micro-os-plus::semihosting-static
         micro-os-plus::startup-static
