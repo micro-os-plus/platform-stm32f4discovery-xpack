@@ -150,38 +150,6 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
 
   # ---------------------------------------------------------------------------
 
-  if(NOT TARGET micro-os-plus-device-objects)
-
-    # Device definitions. Depend on devices-stm32f4-extras and the device
-    # specific definitions stored in the architecture (hack!).
-    add_library(micro-os-plus-device-objects OBJECT EXCLUDE_FROM_ALL)
-
-    # Use the device specific definitions from the architecture (hack!).
-    target_sources_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-objects)
-    target_include_directories_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-objects)
-    target_compile_definitions_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-objects)
-
-    # Add the CubeMX device specific definitions.
-    target_sources_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-objects)
-    target_include_directories_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-objects)
-    target_compile_definitions_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-objects)
-
-    add_library(micro-os-plus::device-objects ALIAS micro-os-plus-device-objects)
-    add_library(micro-os-plus::device ALIAS micro-os-plus-device-objects)
-    message(STATUS "micro-os-plus::device")
-
-    target_link_libraries(
-      micro-os-plus-device-objects
-
-      PUBLIC
-        micro-os-plus::devices-stm32f4-extras
-    )
-
-  endif()
-
-  # ---------------------------------------------------------------------------
-
-if(true)
   if (NOT TARGET micro-os-plus-device-static)
 
     add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
@@ -197,6 +165,7 @@ if(true)
     target_compile_definitions_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-static)
 
     add_library(micro-os-plus::device-static ALIAS micro-os-plus-device-static)
+    message(STATUS "micro-os-plus::device-static")
 
     target_link_libraries(
       micro-os-plus-device-static
@@ -208,7 +177,6 @@ if(true)
     )
 
   endif()
-endif()
 
   # ===========================================================================
 
@@ -216,30 +184,6 @@ endif()
 
   # ---------------------------------------------------------------------------
 
-  if (NOT TARGET micro-os-plus-platform-stm32f4discovery-objects)
-
-    add_library(micro-os-plus-platform-stm32f4discovery-objects OBJECT EXCLUDE_FROM_ALL)
-
-    target_sources_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-objects)
-    target_include_directories_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-objects)
-    target_compile_definitions_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-objects)
-
-    add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-objects)
-    message(STATUS "micro-os-plus::platform-stm32f4discovery")
-
-    target_link_libraries(
-      micro-os-plus-platform-stm32f4discovery-objects
-
-      PUBLIC
-        micro-os-plus::device
-        micro-os-plus::diag-trace
-    )
-
-  endif()
-
-  # ---------------------------------------------------------------------------
-
-if(true)
   if (NOT micro-os-plus-platform-stm32f4discovery-static)
 
     add_library(micro-os-plus-platform-stm32f4discovery-static STATIC EXCLUDE_FROM_ALL)
@@ -249,6 +193,7 @@ if(true)
     target_compile_definitions_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-static)
 
     add_library(micro-os-plus::platform-stm32f4discovery-static ALIAS micro-os-plus-platform-stm32f4discovery-static)
+    message(STATUS "micro-os-plus::platform-stm32f4discovery-static")
 
     target_link_libraries(
       micro-os-plus-platform-stm32f4discovery-static
@@ -259,7 +204,7 @@ if(true)
     )
 
   endif()
-endif()
+
   # ---------------------------------------------------------------------------
 
 endfunction()
