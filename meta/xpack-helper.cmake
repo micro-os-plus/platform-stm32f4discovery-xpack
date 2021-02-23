@@ -18,190 +18,154 @@ set(micro-os-plus-platform-stm32f4discovery-included TRUE)
 message(STATUS "Including micro-os-plus-platform-stm32f4discovery...")
 
 # -----------------------------------------------------------------------------
-
 # Preprocessor symbols.
+
+# TODO: migrate them to CMake options.
 set(xpack_platform_compile_definition "PLATFORM_STM32F4DISCOVERY")
 message(STATUS "${xpack_platform_compile_definition}")
 
 set(xpack_device_compile_definition "STM32F407xx")
 message(STATUS "${xpack_device_compile_definition}")
 
-# =============================================================================
-
-function(target_sources_micro_os_plus_platform_stm32f4discovery target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_sources(
-    ${target}
-
-    # PRIVATE fails with OBJECT, but ok with STATIC
-    PRIVATE
-      ${xpack_current_folder}/stm32cubemx/Core/Src/gpio.c
-      ${xpack_current_folder}/stm32cubemx/Core/Src/main.c
-      ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
-      ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_it.c
-      ${xpack_current_folder}/stm32cubemx/Core/Src/system_stm32f4xx.c
-
-      # HAL is in platform since it depends on generated stm32f4xx_hal_conf.h
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
-    )
-
-endfunction()
-
-
-function(target_include_directories_micro_os_plus_platform_stm32f4discovery target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_include_directories(
-    ${target}
-
-    PUBLIC
-      ${xpack_current_folder}/stm32cubemx/Core/Inc
-      ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
-  )
-
-endfunction()
-
-
-function(target_compile_definitions_micro_os_plus_platform_stm32f4discovery target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_compile_definitions(
-    ${target}
-
-    PUBLIC
-      USE_HAL_DRIVER
-      "${xpack_platform_compile_definition}"
-  )
-
-endfunction()
-
-# =============================================================================
-
-function(target_sources_micro_os_plus_platform_stm32f4discovery_device target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_sources(
-    ${target}
-
-    PRIVATE
-      # ...
-  )
-
-endfunction()
-
-
-function(target_include_directories_micro_os_plus_platform_stm32f4discovery_device target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_include_directories(
-    ${target}
-
-    PUBLIC
-      ${xpack_current_folder}/device/include
-
-      ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include
-      ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Include
-  )
-
-endfunction()
-
-
-function(target_compile_definitions_micro_os_plus_platform_stm32f4discovery_device target)
-
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
-
-  target_compile_definitions(
-    ${target}
-
-    PUBLIC
-      "${xpack_device_compile_definition}"
-  )
-
-endfunction()
-
-# =============================================================================
+# -----------------------------------------------------------------------------
 
 function(add_libraries_micro_os_plus_platform_stm32f4discovery)
+
+  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
 
   # ---------------------------------------------------------------------------
 
   find_package(micro-os-plus-devices-stm32f4-extras)
-  find_package(micro-os-plus-semihosting)
+  find_package(micro-os-plus-architecture-cortexm)
+  find_package(micro-os-plus-startup)
+  find_package(micro-os-plus-diag-trace)
 
   # ---------------------------------------------------------------------------
 
-  if (NOT TARGET micro-os-plus-device-static)
+  if (NOT TARGET micro-os-plus-device-interface)
 
-    add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
+    add_library(micro-os-plus-device-interface INTERFACE EXCLUDE_FROM_ALL)
 
-    # Use the device specific definitions from the architecture (hack!).
-    target_sources_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-static)
-    target_include_directories_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-static)
-    target_compile_definitions_micro_os_plus_architecture_cortexm_device(micro-os-plus-device-static)
+    # -------------------------------------------------------------------------
 
     # Add the CubeMX device specific definitions.
-    target_sources_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-static)
-    target_include_directories_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-static)
-    target_compile_definitions_micro_os_plus_platform_stm32f4discovery_device(micro-os-plus-device-static)
+    # Use the device specific definitions from the architecture (hack!).
+    target_sources(
+      micro-os-plus-device-interface
+  
+      INTERFACE
+        ${xpack_current_folder}/stm32cubemx/Core/Src/system_stm32f4xx.c
+    )
 
-    add_library(micro-os-plus::device-static ALIAS micro-os-plus-device-static)
-    message(STATUS "micro-os-plus::device-static")
+    target_include_directories(
+      micro-os-plus-device-interface
+  
+      INTERFACE
+        ${xpack_current_folder}/device/include
+  
+        # For the CMSIS Core headers.
+        ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Include
 
+        # For the CMSIS vendor files (stm32f4xx.h, system_stm32f4xx.h)
+        ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include
+    )
+
+    target_compile_definitions(
+      micro-os-plus-device-interface
+  
+      INTERFACE
+        "${xpack_device_compile_definition}"
+    )
+  
     target_link_libraries(
-      micro-os-plus-device-static
+      micro-os-plus-device-interface
 
-      PUBLIC
-        micro-os-plus::devices-stm32f4-extras-static
-        micro-os-plus::semihosting-static
+      INTERFACE
+        # Use the device specific definitions from the architecture (hack!).
+        micro-os-plus::architecture-cortexm-device
+
+        micro-os-plus::devices-stm32f4-extras
         micro-os-plus::startup-static
     )
+
+    # -------------------------------------------------------------------------
+    # Aliases
+
+    add_library(micro-os-plus::device ALIAS micro-os-plus-device-interface)
+    message(STATUS "micro-os-plus::device")
 
   endif()
 
   # ===========================================================================
 
-  find_package(micro-os-plus-diag-trace)
+  if (NOT micro-os-plus-platform-stm32f4discovery-interface)
 
-  # ---------------------------------------------------------------------------
+    add_library(micro-os-plus-platform-stm32f4discovery-interface INTERFACE EXCLUDE_FROM_ALL)
 
-  if (NOT micro-os-plus-platform-stm32f4discovery-static)
+    # -------------------------------------------------------------------------
 
-    add_library(micro-os-plus-platform-stm32f4discovery-static STATIC EXCLUDE_FROM_ALL)
+    target_sources(
+      micro-os-plus-platform-stm32f4discovery-interface
+  
+      INTERFACE
+        ${xpack_current_folder}/stm32cubemx/Core/Src/gpio.c
+        ${xpack_current_folder}/stm32cubemx/Core/Src/main.c
+        ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
+        ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_it.c
 
-    target_sources_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-static)
-    target_include_directories_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-static)
-    target_compile_definitions_micro_os_plus_platform_stm32f4discovery(micro-os-plus-platform-stm32f4discovery-static)
+        # system_stm32f4xx.c is not here but in the device library.
 
-    add_library(micro-os-plus::platform-stm32f4discovery-static ALIAS micro-os-plus-platform-stm32f4discovery-static)
-    message(STATUS "micro-os-plus::platform-stm32f4discovery-static")
+        # These are not in the device library because they include
+        # stm32f4xx_hal_conf.h, which is part of the platform.
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
+    )
 
+    target_include_directories(
+      micro-os-plus-platform-stm32f4discovery-interface
+  
+      INTERFACE
+        # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
+        ${xpack_current_folder}/stm32cubemx/Core/Inc
+
+        # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
+        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
+    )
+
+    target_compile_definitions(
+      micro-os-plus-platform-stm32f4discovery-interface
+  
+      INTERFACE
+        "${xpack_platform_compile_definition}"
+        USE_HAL_DRIVER
+    )
+  
     target_link_libraries(
-      micro-os-plus-platform-stm32f4discovery-static
+      micro-os-plus-platform-stm32f4discovery-interface
       
-      PUBLIC
-        micro-os-plus::device-static
+      INTERFACE
+        micro-os-plus::device
         micro-os-plus::diag-trace-static
     )
+
+    # -------------------------------------------------------------------------
+    # Aliases
+
+    add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
+    message(STATUS "micro-os-plus::platform-stm32f4discovery")
 
   endif()
 

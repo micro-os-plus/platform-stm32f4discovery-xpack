@@ -21,4 +21,3 @@ include("${CMAKE_CURRENT_LIST_DIR}/xpack-helper.cmake")
 add_libraries_micro_os_plus_platform_stm32f4discovery()
 
 # -----------------------------------------------------------------------------
-
