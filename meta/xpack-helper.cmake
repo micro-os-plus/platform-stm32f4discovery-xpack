@@ -29,16 +29,14 @@ message(STATUS "${xpack_device_compile_definition}")
 
 # -----------------------------------------------------------------------------
 
-function(add_libraries_micro_os_plus_platform_stm32f4discovery)
+find_package(micro-os-plus-devices-stm32f4-extras)
+find_package(micro-os-plus-architecture-cortexm)
+find_package(micro-os-plus-startup)
+find_package(micro-os-plus-diag-trace)
 
-  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_FUNCTION_LIST_DIR} DIRECTORY)
+# -----------------------------------------------------------------------------
 
-  # ---------------------------------------------------------------------------
-
-  find_package(micro-os-plus-devices-stm32f4-extras)
-  find_package(micro-os-plus-architecture-cortexm)
-  find_package(micro-os-plus-startup)
-  find_package(micro-os-plus-diag-trace)
+  get_filename_component(xpack_current_folder ${CMAKE_CURRENT_LIST_DIR} DIRECTORY)
 
   # ---------------------------------------------------------------------------
 
@@ -89,7 +87,7 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
     )
 
     # -------------------------------------------------------------------------
-    # Aliases
+    # Aliases.
 
     add_library(micro-os-plus::device ALIAS micro-os-plus-device-interface)
     message(STATUS "micro-os-plus::device")
@@ -162,15 +160,11 @@ function(add_libraries_micro_os_plus_platform_stm32f4discovery)
     )
 
     # -------------------------------------------------------------------------
-    # Aliases
+    # Aliases.
 
     add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
     message(STATUS "micro-os-plus::platform-stm32f4discovery")
 
   endif()
-
-  # ---------------------------------------------------------------------------
-
-endfunction()
 
 # -----------------------------------------------------------------------------
