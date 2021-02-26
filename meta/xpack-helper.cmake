@@ -102,6 +102,8 @@ find_package(micro-os-plus-diag-trace)
 
     # -------------------------------------------------------------------------
 
+    file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/*.c*")
+
     target_sources(
       micro-os-plus-platform-stm32f4discovery-interface
   
@@ -115,21 +117,7 @@ find_package(micro-os-plus-diag-trace)
 
         # These are not in the device library because they include
         # stm32f4xx_hal_conf.h, which is part of the platform.
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
-        ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
+        ${source_files}
     )
 
     target_include_directories(
