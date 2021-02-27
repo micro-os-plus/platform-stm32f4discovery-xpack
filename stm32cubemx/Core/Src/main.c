@@ -24,7 +24,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 
-#if defined(OS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
+#if defined(MICRO_OS_PLUS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
 #include <micro-os-plus/diag/trace.h>
 #endif
 
@@ -123,7 +123,7 @@ void Error_Handler(void)
   /* USER CODE BEGIN Error_Handler_Debug */
   /* User can add his own implementation to report the HAL error return state */
 
-#if defined(OS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
+#if defined(MICRO_OS_PLUS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
   trace_printf("Error_Handler()\r\n");
 #endif
 
@@ -148,7 +148,7 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* User can add his own implementation to report the file name and line number,
      ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
 
-#if defined(OS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
+#if defined(MICRO_OS_PLUS_INCLUDE_MICRO_OS_PLUS_DIAG_TRACE)
   trace_printf("Wrong parameters value: file %s on line %d\r\n", file, line);
 #endif
 
