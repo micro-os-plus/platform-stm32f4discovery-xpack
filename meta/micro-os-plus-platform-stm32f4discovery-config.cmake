@@ -18,7 +18,7 @@ endif()
 
 set(micro-os-plus-platform-stm32f4discovery-included TRUE)
 
-message(STATUS "Including micro-os-plus-platform-stm32f4discovery...")
+message(STATUS "Processing xPack ${PACKAGE_JSON_NAME}@${PACKAGE_JSON_VERSION}...")
 
 # -----------------------------------------------------------------------------
 # Preprocessor symbols.
