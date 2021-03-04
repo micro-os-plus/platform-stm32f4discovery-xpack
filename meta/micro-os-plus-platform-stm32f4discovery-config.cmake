@@ -98,14 +98,14 @@ find_package(micro-os-plus-diag-trace)
         micro-os-plus::architecture-cortexm-device
 
         micro-os-plus::devices-stm32f4-extras
-        micro-os-plus::startup-static
+        micro-os-plus::startup
     )
 
     # -------------------------------------------------------------------------
     # Aliases.
 
-    add_library(micro-os-plus::device-static ALIAS micro-os-plus-device-static)
-    message(STATUS "=> micro-os-plus::device-static")
+    add_library(micro-os-plus::device ALIAS micro-os-plus-device-static)
+    message(STATUS "=> micro-os-plus::device")
 
   endif()
 
@@ -172,15 +172,15 @@ find_package(micro-os-plus-diag-trace)
       micro-os-plus-platform-stm32f4discovery-interface
       
       PUBLIC
-        micro-os-plus::device-static
-        micro-os-plus::diag-trace-static
+        micro-os-plus::device
+        micro-os-plus::diag-trace
     )
 
     # -------------------------------------------------------------------------
     # Aliases.
 
-    add_library(micro-os-plus::platform-stm32f4discovery-static ALIAS micro-os-plus-platform-stm32f4discovery-interface)
-    message(STATUS "=> micro-os-plus::platform-stm32f4discovery-static")
+    add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
+    message(STATUS "=> micro-os-plus::platform-stm32f4discovery")
 
   endif()
 
