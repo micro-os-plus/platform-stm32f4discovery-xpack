@@ -82,7 +82,14 @@ find_package(micro-os-plus-diag-trace)
       INTERFACE
         "${xpack_device_compile_definition}"
     )
+
+    target_compile_options(
+      micro-os-plus-device-static
   
+      PRIVATE
+        # To silence HAL warnings.
+    )
+
     target_link_libraries(
       micro-os-plus-device-interface
 
@@ -154,6 +161,13 @@ find_package(micro-os-plus-diag-trace)
         USE_HAL_DRIVER
     )
   
+    target_compile_options(
+      micro-os-plus-platform-stm32f4discovery-interface
+  
+      PRIVATE
+        # To silence HAL warnings.
+    )
+
     target_link_libraries(
       micro-os-plus-platform-stm32f4discovery-interface
       
