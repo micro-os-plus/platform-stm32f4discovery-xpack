@@ -46,13 +46,19 @@ find_package(micro-os-plus-diag-trace)
 
     # -------------------------------------------------------------------------
 
+    set(source_files
+      ${xpack_current_folder}/stm32cubemx/Core/Src/system_stm32f4xx.c
+    )
+
+    xpack_display_relative_paths("${source_files}" "${xpack_current_folder}")
+
     # Add the CubeMX device specific definitions.
     # Use the device specific definitions from the architecture (hack!).
     target_sources(
       micro-os-plus-device-interface
   
       INTERFACE
-        ${xpack_current_folder}/stm32cubemx/Core/Src/system_stm32f4xx.c
+        ${source_files}
     )
 
     target_include_directories(
@@ -104,21 +110,26 @@ find_package(micro-os-plus-diag-trace)
 
     # -------------------------------------------------------------------------
 
-    file(GLOB_RECURSE source_files CONFIGURE_DEPENDS "${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/*.c*")
+    xpack_glob_recurse_cxx(source_files "${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src")
+
+    list(APPEND source_files
+      ${xpack_current_folder}/stm32cubemx/Core/Src/gpio.c
+      ${xpack_current_folder}/stm32cubemx/Core/Src/main.c
+      ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
+      ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_it.c
+
+      # system_stm32f4xx.c is not here but in the device library.
+
+      # These are not in the device library because they include
+      # stm32f4xx_hal_conf.h, which is part of the platform.
+    )
+
+    xpack_display_relative_paths("${source_files}" "${xpack_current_folder}")
 
     target_sources(
       micro-os-plus-platform-stm32f4discovery-interface
   
       INTERFACE
-        ${xpack_current_folder}/stm32cubemx/Core/Src/gpio.c
-        ${xpack_current_folder}/stm32cubemx/Core/Src/main.c
-        ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
-        ${xpack_current_folder}/stm32cubemx/Core/Src/stm32f4xx_it.c
-
-        # system_stm32f4xx.c is not here but in the device library.
-
-        # These are not in the device library because they include
-        # stm32f4xx_hal_conf.h, which is part of the platform.
         ${source_files}
     )
 
