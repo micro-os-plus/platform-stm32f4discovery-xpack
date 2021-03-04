@@ -25,10 +25,7 @@ message(STATUS "Processing xPack ${PACKAGE_JSON_NAME}@${PACKAGE_JSON_VERSION}...
 
 # TODO: migrate them to CMake options.
 set(xpack_platform_compile_definition "PLATFORM_STM32F4DISCOVERY")
-message(STATUS "${xpack_platform_compile_definition}")
-
 set(xpack_device_compile_definition "STM32F407xx")
-message(STATUS "${xpack_device_compile_definition}")
 
 # -----------------------------------------------------------------------------
 
@@ -70,6 +67,8 @@ find_package(micro-os-plus-diag-trace)
         # For the CMSIS vendor files (stm32f4xx.h, system_stm32f4xx.h)
         ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include
     )
+
+    message(STATUS "+ ${xpack_device_compile_definition}")
 
     target_compile_definitions(
       micro-os-plus-device-interface
@@ -133,6 +132,8 @@ find_package(micro-os-plus-diag-trace)
         # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
         ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
     )
+
+    message(STATUS "+ ${xpack_platform_compile_definition}")
 
     target_compile_definitions(
       micro-os-plus-platform-stm32f4discovery-interface
