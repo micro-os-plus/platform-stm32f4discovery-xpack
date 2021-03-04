@@ -40,9 +40,9 @@ find_package(micro-os-plus-diag-trace)
 
   # ---------------------------------------------------------------------------
 
-  if (NOT TARGET micro-os-plus-device-interface)
+  if (NOT TARGET micro-os-plus-device-static)
 
-    add_library(micro-os-plus-device-interface INTERFACE EXCLUDE_FROM_ALL)
+    add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
 
     # -------------------------------------------------------------------------
 
@@ -55,16 +55,16 @@ find_package(micro-os-plus-diag-trace)
     # Add the CubeMX device specific definitions.
     # Use the device specific definitions from the architecture (hack!).
     target_sources(
-      micro-os-plus-device-interface
+      micro-os-plus-device-static
   
-      INTERFACE
+      PRIVATE
         ${source_files}
     )
 
     target_include_directories(
-      micro-os-plus-device-interface
+      micro-os-plus-device-static
   
-      INTERFACE
+      PUBLIC
         ${xpack_current_folder}/device/include
   
         # For the CMSIS Core headers.
@@ -77,9 +77,9 @@ find_package(micro-os-plus-diag-trace)
     message(STATUS "+ ${xpack_device_compile_definition}")
 
     target_compile_definitions(
-      micro-os-plus-device-interface
+      micro-os-plus-device-static
   
-      INTERFACE
+      PUBLIC
         "${xpack_device_compile_definition}"
     )
 
@@ -91,9 +91,9 @@ find_package(micro-os-plus-diag-trace)
     )
 
     target_link_libraries(
-      micro-os-plus-device-interface
+      micro-os-plus-device-static
 
-      INTERFACE
+      PUBLIC
         # Use the device specific definitions from the architecture (hack!).
         micro-os-plus::architecture-cortexm-device
 
@@ -104,8 +104,8 @@ find_package(micro-os-plus-diag-trace)
     # -------------------------------------------------------------------------
     # Aliases.
 
-    add_library(micro-os-plus::device ALIAS micro-os-plus-device-interface)
-    message(STATUS "micro-os-plus::device")
+    add_library(micro-os-plus::device-static ALIAS micro-os-plus-device-static)
+    message(STATUS "=> micro-os-plus::device-static")
 
   endif()
 
@@ -113,7 +113,7 @@ find_package(micro-os-plus-diag-trace)
 
   if (NOT micro-os-plus-platform-stm32f4discovery-interface)
 
-    add_library(micro-os-plus-platform-stm32f4discovery-interface INTERFACE EXCLUDE_FROM_ALL)
+    add_library(micro-os-plus-platform-stm32f4discovery-interface STATIC EXCLUDE_FROM_ALL)
 
     # -------------------------------------------------------------------------
 
@@ -136,14 +136,14 @@ find_package(micro-os-plus-diag-trace)
     target_sources(
       micro-os-plus-platform-stm32f4discovery-interface
   
-      INTERFACE
+      PRIVATE
         ${source_files}
     )
 
     target_include_directories(
       micro-os-plus-platform-stm32f4discovery-interface
   
-      INTERFACE
+      PUBLIC
         # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
         ${xpack_current_folder}/stm32cubemx/Core/Inc
 
@@ -156,7 +156,7 @@ find_package(micro-os-plus-diag-trace)
     target_compile_definitions(
       micro-os-plus-platform-stm32f4discovery-interface
   
-      INTERFACE
+      PUBLIC
         "${xpack_platform_compile_definition}"
         USE_HAL_DRIVER
     )
@@ -171,16 +171,16 @@ find_package(micro-os-plus-diag-trace)
     target_link_libraries(
       micro-os-plus-platform-stm32f4discovery-interface
       
-      INTERFACE
-        micro-os-plus::device
+      PUBLIC
+        micro-os-plus::device-static
         micro-os-plus::diag-trace-static
     )
 
     # -------------------------------------------------------------------------
     # Aliases.
 
-    add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
-    message(STATUS "micro-os-plus::platform-stm32f4discovery")
+    add_library(micro-os-plus::platform-stm32f4discovery-static ALIAS micro-os-plus-platform-stm32f4discovery-interface)
+    message(STATUS "=> micro-os-plus::platform-stm32f4discovery-static")
 
   endif()
 
