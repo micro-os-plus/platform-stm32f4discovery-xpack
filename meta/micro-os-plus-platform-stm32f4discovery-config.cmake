@@ -65,8 +65,6 @@ find_package(micro-os-plus-diag-trace)
       micro-os-plus-device-static
   
       PUBLIC
-        ${xpack_current_folder}/device/include
-  
         # For the CMSIS Core headers.
         ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Include
 
@@ -166,6 +164,14 @@ find_package(micro-os-plus-diag-trace)
   
       PRIVATE
         # To silence HAL warnings.
+        -Wno-padded
+        -Wno-switch-enum
+        -Wno-conversion
+        -Wno-redundant-decls
+        -Wno-switch-default
+        -Wno-unused-parameter
+
+        $<$<COMPILE_LANG_AND_ID:C,GNU>:-Wno-bad-function-cast>
     )
 
     target_link_libraries(
