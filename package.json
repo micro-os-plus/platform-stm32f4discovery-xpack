@@ -1,6 +1,6 @@
 {
   "name": "@micro-os-plus/platform-stm32f4discovery",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A source xPack with the STM32F4DISCOVERY board support",
   "main": "",
   "scripts": {
@@ -28,7 +28,6 @@
   },
   "license": "MIT",
   "config": {},
-  "dependencies": {},
   "devDependencies": {},
   "xpack": {}
 }
