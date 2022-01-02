@@ -1,6 +1,6 @@
 {
   "name": "@micro-os-plus/platform-stm32f4discovery",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "A source xPack with the STM32F4DISCOVERY board support",
   "main": "",
   "scripts": {
