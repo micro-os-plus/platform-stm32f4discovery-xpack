@@ -36,7 +36,6 @@ set(xpack_device_compile_definition "STM32F407xx")
 # -----------------------------------------------------------------------------
 
 find_package(micro-os-plus-devices-stm32f4-extras)
-message(STATUS "Baburiba 2")
 find_package(micro-os-plus-architecture-cortexm)
 find_package(micro-os-plus-startup)
 find_package(micro-os-plus-diag-trace)
