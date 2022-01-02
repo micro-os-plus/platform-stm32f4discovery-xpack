@@ -14,18 +14,22 @@ The project is hosted on GitHub:
 To clone it:
 
 ```sh
+rm -rf ~/Work/platform-stm32f4discovery-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git \
-  platform-stm32f4discovery-xpack.git
+  ~/Work/platform-stm32f4discovery-xpack.git
 ```
 
 For development purposes, clone the `xpack-develop` branch:
 
 ```sh
+rm -rf ~/Work/platform-stm32f4discovery-xpack.git && \
+mkdir -p ~/Work && \
 git clone \
   --branch xpack-develop \
   https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git \
-  platform-stm32f4discovery-xpack.git
+  ~/Work/platform-stm32f4discovery-xpack.git
 ```
 
 ## Prerequisites
