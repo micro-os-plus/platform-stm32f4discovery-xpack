@@ -11,12 +11,18 @@
 
 # https://cmake.org/cmake/help/v3.19/
 # https://cmake.org/cmake/help/v3.19/manual/cmake-packages.7.html#package-configuration-file
+cmake_minimum_required(VERSION 3.19)
 
-if(micro-os-plus-platform-stm32f4discovery-included)
+# Use targets as include markers (variables are not scope independent).
+if(TARGET micro-os-plus-platform-stm32f4discovery-included)
   return()
+else()
+  add_custom_target(micro-os-plus-platform-stm32f4discovery-included)
 endif()
 
-set(micro-os-plus-platform-stm32f4discovery-included TRUE)
+if(NOT TARGET micro-os-plus-build-helper-included)
+  message(FATAL_ERROR "Include the mandatory build-helper (xpacks/micro-os-plus-build-helper/cmake/xpack-helper.cmake)")
+endif()
 
 message(STATUS "Processing xPack ${PACKAGE_JSON_NAME}@${PACKAGE_JSON_VERSION}...")
 
@@ -30,6 +36,7 @@ set(xpack_device_compile_definition "STM32F407xx")
 # -----------------------------------------------------------------------------
 
 find_package(micro-os-plus-devices-stm32f4-extras)
+message(STATUS "Baburiba 2")
 find_package(micro-os-plus-architecture-cortexm)
 find_package(micro-os-plus-startup)
 find_package(micro-os-plus-diag-trace)
@@ -56,14 +63,14 @@ find_package(micro-os-plus-diag-trace)
     # Use the device specific definitions from the architecture (hack!).
     target_sources(
       micro-os-plus-device-static
-  
+
       PRIVATE
         ${source_files}
     )
 
     target_include_directories(
       micro-os-plus-device-static
-  
+
       PUBLIC
         # For the CMSIS Core headers.
         ${xpack_current_folder}/stm32cubemx/Drivers/CMSIS/Include
@@ -76,14 +83,14 @@ find_package(micro-os-plus-diag-trace)
 
     target_compile_definitions(
       micro-os-plus-device-static
-  
+
       PUBLIC
         "${xpack_device_compile_definition}"
     )
 
     target_compile_options(
       micro-os-plus-device-static
-  
+
       PRIVATE
         # To silence HAL warnings.
     )
@@ -115,6 +122,8 @@ find_package(micro-os-plus-diag-trace)
 
     # -------------------------------------------------------------------------
 
+    if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+
     xpack_glob_recurse_cxx(source_files "${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src")
 
     list(APPEND source_files
@@ -133,14 +142,14 @@ find_package(micro-os-plus-diag-trace)
 
     target_sources(
       micro-os-plus-platform-stm32f4discovery-interface
-  
+
       PRIVATE
         ${source_files}
     )
 
     target_include_directories(
       micro-os-plus-platform-stm32f4discovery-interface
-  
+
       PUBLIC
         # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
         ${xpack_current_folder}/stm32cubemx/Core/Inc
@@ -148,20 +157,30 @@ find_package(micro-os-plus-diag-trace)
         # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
         ${xpack_current_folder}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
     )
+    endif()
 
     message(STATUS "+ ${xpack_platform_compile_definition}")
 
     target_compile_definitions(
       micro-os-plus-platform-stm32f4discovery-interface
-  
+
       PUBLIC
         "${xpack_platform_compile_definition}"
-        USE_HAL_DRIVER
     )
-  
+
+    if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+      target_compile_definitions(
+        micro-os-plus-platform-stm32f4discovery-interface
+
+        PUBLIC
+          USE_HAL_DRIVER
+      )
+    endif()
+
+
     target_compile_options(
       micro-os-plus-platform-stm32f4discovery-interface
-  
+
       PRIVATE
         # To silence HAL warnings.
         -Wno-padded
@@ -176,7 +195,7 @@ find_package(micro-os-plus-diag-trace)
 
     target_link_libraries(
       micro-os-plus-platform-stm32f4discovery-interface
-      
+
       PUBLIC
         micro-os-plus::device
         micro-os-plus::diag-trace
