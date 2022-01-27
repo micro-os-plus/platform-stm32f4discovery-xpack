@@ -61,7 +61,7 @@ else()
     xpack_process_package_version()
   endif()
 
-  ## Main targets built by this project ##
+  # Main targets built by this project.
   add_subdirectory(stm32cubemx)
 
 endif()
