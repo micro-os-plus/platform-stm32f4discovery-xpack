@@ -30,40 +30,176 @@ project(
   DESCRIPTION "µOS++ STM32F4DISCOVERY board support"
 )
 
-# Must be called from the project root folder.
-enable_testing()
+# PRIVATE: build definitions, used internally
+# INTERFACE: usage definitions, passed up to targets linking to it
+# PUBLIC: both
+
+if(COMMAND xpack_get_package_name_and_version)
+  xpack_get_package_name_and_version("${CMAKE_CURRENT_SOURCE_DIR}/package.json")
+  message(VERBOSE "Processing xPack ${PACKAGE_JSON_NAME}@${PACKAGE_JSON_VERSION}...")
+endif()
 
 # -----------------------------------------------------------------------------
-## Project wide setup ##
+# Preprocessor symbols.
 
-enable_language(C)
-enable_language(CXX)
-enable_language(ASM)
-
-# Specify the C/C++ standards.
-set(CMAKE_C_STANDARD 11)
-set(CMAKE_C_STANDARD_REQUIRED ON)
-set(CMAKE_C_EXTENSIONS OFF)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(xpack_platform_compile_definition "PLATFORM_STM32F4DISCOVERY")
+set(xpack_device_compile_definition "STM32F407xx")
+string(TOLOWER ${xpack_device_compile_definition} xpack_device_name)
 
 # -----------------------------------------------------------------------------
 
-if ("${CMAKE_CURRENT_LIST_DIR}" STREQUAL "${CMAKE_SOURCE_DIR}")
+add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
 
-  # Tests, only when not part of a parent application
-  add_subdirectory(tests)
+# -----------------------------------------------------------------------------
 
-else()
+# Add the CubeMX device specific definitions.
+# Use the device specific definitions from the architecture (hack!).
+target_sources(
+  micro-os-plus-device-static
 
-  if(COMMAND xpack_process_package_version)
-    xpack_process_package_version()
-  endif()
+  PRIVATE
+    "stm32cubemx/Core/Src/system_stm32f4xx.c"
+)
 
-  # Main targets built by this project.
-  add_subdirectory(stm32cubemx)
+message(VERBOSE "+ stm32cubemx/Core/Src/system_stm32f4xx.c")
+
+target_include_directories(
+  micro-os-plus-device-static
+
+  PUBLIC
+    # For the CMSIS Core headers.
+    "stm32cubemx/Drivers/CMSIS/Include"
+
+    # For the CMSIS vendor files (stm32f4xx.h, system_stm32f4xx.h)
+    "stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+)
+
+message(VERBOSE "+ stm32cubemx/Drivers/CMSIS/Include")
+message(VERBOSE "+ stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include")
+
+target_compile_definitions(
+  micro-os-plus-device-static
+
+  PUBLIC
+    # ...
+)
+
+target_compile_options(
+  micro-os-plus-device-static
+
+  PRIVATE
+    # To silence HAL warnings.
+)
+
+target_link_libraries(
+  micro-os-plus-device-static
+
+  PUBLIC
+    # Use the device specific definitions from the architecture (hack!).
+    micro-os-plus::architecture-cortexm-device
+
+    micro-os-plus::devices-${xpack_device_name}-extras
+    micro-os-plus::startup
+)
+
+# -----------------------------------------------------------------------------
+# Aliases.
+
+add_library(micro-os-plus::device ALIAS micro-os-plus-device-static)
+message(VERBOSE "> micro-os-plus::device -> micro-os-plus-device-static")
+
+# =============================================================================
+
+
+add_library(micro-os-plus-platform-stm32f4discovery-interface STATIC EXCLUDE_FROM_ALL)
+
+if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+
+  xpack_glob_recurse_cxx(source_files "${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src")
+
+  list(APPEND source_files
+    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/gpio.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/main.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/stm32f4xx_it.c
+
+    # system_stm32f4xx.c is not here but in the device library.
+
+    # These are not in the device library because they include
+    # stm32f4xx_hal_conf.h, which is part of the platform.
+  )
+
+  xpack_display_relative_paths("${source_files}" "${CMAKE_CURRENT_SOURCE_DIR}")
+
+  target_sources(
+    micro-os-plus-platform-stm32f4discovery-interface
+
+    PRIVATE
+      ${source_files}
+  )
+
+  target_include_directories(
+    micro-os-plus-platform-stm32f4discovery-interface
+
+    PUBLIC
+      # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
+      stm32cubemx/Core/Inc
+
+      # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
+      stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
+  )
+
+  message(VERBOSE "+ stm32cubemx/Core/Inc")
+  message(VERBOSE "+ stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc")
 
 endif()
+
+message(VERBOSE "+ ${xpack_platform_compile_definition}")
+
+target_compile_definitions(
+  micro-os-plus-platform-stm32f4discovery-interface
+
+  PUBLIC
+    "${xpack_platform_compile_definition}"
+)
+
+if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+  target_compile_definitions(
+    micro-os-plus-platform-stm32f4discovery-interface
+
+    PUBLIC
+      USE_HAL_DRIVER
+  )
+endif()
+
+
+target_compile_options(
+  micro-os-plus-platform-stm32f4discovery-interface
+
+  PRIVATE
+    # To silence HAL warnings.
+    -Wno-padded
+    -Wno-switch-enum
+    -Wno-conversion
+    -Wno-redundant-decls
+    -Wno-switch-default
+    -Wno-unused-parameter
+
+    $<$<COMPILE_LANG_AND_ID:C,GNU>:-Wno-bad-function-cast>
+)
+
+target_link_libraries(
+  micro-os-plus-platform-stm32f4discovery-interface
+
+  PUBLIC
+    micro-os-plus::device
+    micro-os-plus::diag-trace
+)
+
+# ---------------------------------------------------------------------------
+# Aliases.
+
+add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
+message(VERBOSE "> micro-os-plus::platform-stm32f4discovery -> micro-os-plus-platform-stm32f4discovery-interface")
 
 # -----------------------------------------------------------------------------
