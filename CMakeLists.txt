@@ -30,10 +30,6 @@ project(
   DESCRIPTION "µOS++ STM32F4DISCOVERY board support"
 )
 
-# PRIVATE: build definitions, used internally
-# INTERFACE: usage definitions, passed up to targets linking to it
-# PUBLIC: both
-
 if(COMMAND xpack_get_package_name_and_version)
   xpack_get_package_name_and_version("${CMAKE_CURRENT_SOURCE_DIR}/package.json")
   message(VERBOSE "Processing xPack ${PACKAGE_JSON_NAME}@${PACKAGE_JSON_VERSION}...")
@@ -47,10 +43,17 @@ set(xpack_device_compile_definition "STM32F407xx")
 string(TOLOWER ${xpack_device_compile_definition} xpack_device_name)
 
 # -----------------------------------------------------------------------------
+## The project library definitions ##
+
+# https://cmake.org/cmake/help/v3.20/command/add_library.html?highlight=interface#normal-libraries
+# PRIVATE: build definitions, used internally
+# INTERFACE: usage definitions, passed up to targets linking to it
+# PUBLIC: both
 
 add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
 
 # -----------------------------------------------------------------------------
+# Target settings.
 
 # Add the CubeMX device specific definitions.
 # Use the device specific definitions from the architecture (hack!).
@@ -196,7 +199,7 @@ target_link_libraries(
     micro-os-plus::diag-trace
 )
 
-# ---------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
 # Aliases.
 
 add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
