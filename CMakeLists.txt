@@ -18,9 +18,6 @@
 # The result is a static library that can be added to the linker with:
 #
 # `target_link_libraries(your-target PUBLIC micro-os-plus::platform-stm32f4discovery)`
-#
-# To avoid poluting this file with test related details, there is a separate
-# CMake configuration in the `tests` folder.
 
 # -----------------------------------------------------------------------------
 ## Preamble ##
@@ -53,26 +50,17 @@ string(TOLOWER ${xpack_device_compile_definition} xpack_device_name)
 # INTERFACE: usage definitions, passed up to targets linking to it
 # PUBLIC: both
 
-add_library(micro-os-plus-device-static STATIC EXCLUDE_FROM_ALL)
+add_library(micro-os-plus-device-interface INTERFACE EXCLUDE_FROM_ALL)
 
 # -----------------------------------------------------------------------------
 # Target settings.
 
 # Add the CubeMX device specific definitions.
-# Use the device specific definitions from the architecture (hack!).
-target_sources(
-  micro-os-plus-device-static
-
-  PRIVATE
-    "stm32cubemx/Core/Src/system_stm32f4xx.c"
-)
-
-message(VERBOSE "+ stm32cubemx/Core/Src/system_stm32f4xx.c")
 
 target_include_directories(
-  micro-os-plus-device-static
+  micro-os-plus-device-interface
 
-  PUBLIC
+  INTERFACE
     # For the CMSIS Core headers.
     "stm32cubemx/Drivers/CMSIS/Include"
 
@@ -80,29 +68,39 @@ target_include_directories(
     "stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
 )
 
-message(VERBOSE "+ stm32cubemx/Drivers/CMSIS/Include")
-message(VERBOSE "+ stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include")
+message(VERBOSE "+ -I stm32cubemx/Drivers/CMSIS/Include")
+message(VERBOSE "+ -I stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include")
+
+target_sources(
+  micro-os-plus-device-interface
+
+  INTERFACE
+    "stm32cubemx/Core/Src/system_stm32f4xx.c"
+)
+
+message(VERBOSE "+ stm32cubemx/Core/Src/system_stm32f4xx.c")
 
 target_compile_definitions(
-  micro-os-plus-device-static
+  micro-os-plus-device-interface
 
-  PUBLIC
-    # ...
+  INTERFACE
+    # Already defined in the micro-os-plus-device-stm32f4-extras.
+    # ${xpack_device_compile_definition}
+    # ... add preprocessor macro definitions.
 )
 
 target_compile_options(
-  micro-os-plus-device-static
+  micro-os-plus-device-interface
 
-  PRIVATE
-    # To silence HAL warnings.
+  INTERFACE
+    # ... perhaps ignore some warnings.
 )
 
 target_link_libraries(
-  micro-os-plus-device-static
+  micro-os-plus-device-interface
 
-  PUBLIC
-    # Use the device specific definitions from the architecture (hack!).
-    micro-os-plus::architecture-cortexm-device
+  INTERFACE
+    micro-os-plus::device-cortexm
 
     micro-os-plus::devices-${xpack_device_name}-extras
     micro-os-plus::startup
@@ -111,15 +109,29 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # Aliases.
 
-add_library(micro-os-plus::device ALIAS micro-os-plus-device-static)
-message(VERBOSE "> micro-os-plus::device -> micro-os-plus-device-static")
+# https://cmake.org/cmake/help/v3.20/command/add_library.html#alias-libraries
+add_library(micro-os-plus::device ALIAS micro-os-plus-device-interface)
+message(VERBOSE "> micro-os-plus::device -> micro-os-plus-device-interface")
 
 # =============================================================================
 
+add_library(micro-os-plus-platform-stm32f4discovery-interface INTERFACE EXCLUDE_FROM_ALL)
 
-add_library(micro-os-plus-platform-stm32f4discovery-interface STATIC EXCLUDE_FROM_ALL)
+  if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
 
-if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+  target_include_directories(
+    micro-os-plus-platform-stm32f4discovery-interface
+
+    INTERFACE
+      # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
+      "stm32cubemx/Core/Inc"
+
+      # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
+      "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc"
+  )
+
+  message(VERBOSE "+ -I stm32cubemx/Core/Inc")
+  message(VERBOSE "+ -I stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc")
 
   xpack_glob_recurse_cxx(source_files "${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src")
 
@@ -140,49 +152,38 @@ if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
   target_sources(
     micro-os-plus-platform-stm32f4discovery-interface
 
-    PRIVATE
+    INTERFACE
       ${source_files}
   )
 
-  target_include_directories(
-    micro-os-plus-platform-stm32f4discovery-interface
-
-    PUBLIC
-      # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
-      stm32cubemx/Core/Inc
-
-      # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
-      stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc
-  )
-
-  message(VERBOSE "+ stm32cubemx/Core/Inc")
-  message(VERBOSE "+ stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc")
-
 endif()
-
-message(VERBOSE "+ ${xpack_platform_compile_definition}")
 
 target_compile_definitions(
   micro-os-plus-platform-stm32f4discovery-interface
 
-  PUBLIC
+  INTERFACE
     "${xpack_platform_compile_definition}"
 )
 
+message(VERBOSE "+ -D ${xpack_platform_compile_definition}")
+
 if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+
   target_compile_definitions(
     micro-os-plus-platform-stm32f4discovery-interface
 
-    PUBLIC
+    INTERFACE
       USE_HAL_DRIVER
   )
-endif()
 
+  message(VERBOSE "+ -D USE_HAL_DRIVER")
+
+endif()
 
 target_compile_options(
   micro-os-plus-platform-stm32f4discovery-interface
 
-  PRIVATE
+  INTERFACE
     # To silence HAL warnings.
     -Wno-padded
     -Wno-switch-enum
@@ -197,7 +198,7 @@ target_compile_options(
 target_link_libraries(
   micro-os-plus-platform-stm32f4discovery-interface
 
-  PUBLIC
+  INTERFACE
     micro-os-plus::device
     micro-os-plus::diag-trace
 )
@@ -205,6 +206,7 @@ target_link_libraries(
 # -----------------------------------------------------------------------------
 # Aliases.
 
+# https://cmake.org/cmake/help/v3.20/command/add_library.html#alias-libraries
 add_library(micro-os-plus::platform-stm32f4discovery ALIAS micro-os-plus-platform-stm32f4discovery-interface)
 message(VERBOSE "> micro-os-plus::platform-stm32f4discovery -> micro-os-plus-platform-stm32f4discovery-interface")
 
