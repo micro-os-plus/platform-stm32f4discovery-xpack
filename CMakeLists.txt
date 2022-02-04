@@ -68,17 +68,12 @@ target_include_directories(
     "stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
 )
 
-message(VERBOSE "+ -I stm32cubemx/Drivers/CMSIS/Include")
-message(VERBOSE "+ -I stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include")
-
 target_sources(
   micro-os-plus-device-interface
 
   INTERFACE
     "stm32cubemx/Core/Src/system_stm32f4xx.c"
 )
-
-message(VERBOSE "+ stm32cubemx/Core/Src/system_stm32f4xx.c")
 
 target_compile_definitions(
   micro-os-plus-device-interface
@@ -106,6 +101,10 @@ target_link_libraries(
     micro-os-plus::startup
 )
 
+if (COMMAND xpack_display_target_lists)
+  xpack_display_target_lists(micro-os-plus-device-interface)
+endif()
+
 # -----------------------------------------------------------------------------
 # Aliases.
 
@@ -130,33 +129,37 @@ add_library(micro-os-plus-platform-stm32f4discovery-interface INTERFACE EXCLUDE_
       "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc"
   )
 
-  message(VERBOSE "+ -I stm32cubemx/Core/Inc")
-  message(VERBOSE "+ -I stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc")
+  target_sources(
+    micro-os-plus-platform-stm32f4discovery-interface
 
-  xpack_glob_recurse_cxx(source_files "${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src")
-
-  list(APPEND source_files
-    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/gpio.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/main.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/stm32cubemx/Core/Src/stm32f4xx_it.c
+    INTERFACE
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
+    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
 
     # system_stm32f4xx.c is not here but in the device library.
 
     # These are not in the device library because they include
     # stm32f4xx_hal_conf.h, which is part of the platform.
+    stm32cubemx/Core/Src/gpio.c
+    stm32cubemx/Core/Src/main.c
+    stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
+    stm32cubemx/Core/Src/stm32f4xx_it.c
   )
 
-  xpack_display_relative_paths("${source_files}" "${CMAKE_CURRENT_SOURCE_DIR}")
-
-  target_sources(
-    micro-os-plus-platform-stm32f4discovery-interface
-
-    INTERFACE
-      ${source_files}
-  )
-
-endif()
+  endif()
 
 target_compile_definitions(
   micro-os-plus-platform-stm32f4discovery-interface
@@ -164,8 +167,6 @@ target_compile_definitions(
   INTERFACE
     "${xpack_platform_compile_definition}"
 )
-
-message(VERBOSE "+ -D ${xpack_platform_compile_definition}")
 
 if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
 
@@ -175,8 +176,6 @@ if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
     INTERFACE
       USE_HAL_DRIVER
   )
-
-  message(VERBOSE "+ -D USE_HAL_DRIVER")
 
 endif()
 
@@ -202,6 +201,10 @@ target_link_libraries(
     micro-os-plus::device
     micro-os-plus::diag-trace
 )
+
+if (COMMAND xpack_display_target_lists)
+  xpack_display_target_lists(micro-os-plus-platform-stm32f4discovery-interface)
+endif()
 
 # -----------------------------------------------------------------------------
 # Aliases.
