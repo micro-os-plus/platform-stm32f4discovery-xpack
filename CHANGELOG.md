@@ -8,6 +8,8 @@ and close existing issues and pull requests.
 
 ## 2022-02-04
 
+- v3.3.0
+- c7f8c9c update cmake & meson to devices-cortexm
 - v3.2.0
 - 92fbb3c cmake: add xpack_display_target_lists
 - 44c1d08 add meson support
