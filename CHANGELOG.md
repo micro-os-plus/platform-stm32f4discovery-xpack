@@ -6,6 +6,16 @@ Please check
 [GitHub](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/issues/)
 and close existing issues and pull requests.
 
+## 2022-02-04
+
+- v3.2.0
+- 92fbb3c cmake: add xpack_display_target_lists
+- 44c1d08 add meson support
+
+## 2022-01-28
+
+- 27d51fa rework CMake, top config
+
 ## 2022-01-26
 
 - v3.1.0
