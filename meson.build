@@ -50,7 +50,7 @@ micro_os_plus_device_dependency = declare_dependency(
     # '-D'+xpack_device_compile_definition,
   ],
   dependencies: [
-    micro_os_plus_device_cortexm_dependency,
+    micro_os_plus_devices_cortexm_dependency,
 
     get_variable('micro_os_plus_devices_'+xpack_device_name+'_extras_dependency'),
     micro_os_plus_startup_dependency

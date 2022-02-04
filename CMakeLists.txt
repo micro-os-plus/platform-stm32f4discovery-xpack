@@ -95,7 +95,7 @@ target_link_libraries(
   micro-os-plus-device-interface
 
   INTERFACE
-    micro-os-plus::device-cortexm
+    micro-os-plus::devices-cortexm
 
     micro-os-plus::devices-${xpack_device_name}-extras
     micro-os-plus::startup
