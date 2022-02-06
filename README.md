@@ -143,11 +143,11 @@ the `SysTick_Handler` should also call some HAL specific functions.
 
 TBD
 
-#### Namespaces
+#### C++ Namespaces
 
 - none
 
-#### Classes
+#### C++ Classes
 
 - none
 
