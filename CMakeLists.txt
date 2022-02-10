@@ -57,48 +57,33 @@ add_library(micro-os-plus-device-interface INTERFACE EXCLUDE_FROM_ALL)
 
 # Add the CubeMX device specific definitions.
 
-target_include_directories(
-  micro-os-plus-device-interface
+target_include_directories(micro-os-plus-device-interface INTERFACE
+  # For the CMSIS Core headers.
+  "stm32cubemx/Drivers/CMSIS/Include"
 
-  INTERFACE
-    # For the CMSIS Core headers.
-    "stm32cubemx/Drivers/CMSIS/Include"
-
-    # For the CMSIS vendor files (stm32f4xx.h, system_stm32f4xx.h)
-    "stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
+  # For the CMSIS vendor files (stm32f4xx.h, system_stm32f4xx.h)
+  "stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include"
 )
 
-target_sources(
-  micro-os-plus-device-interface
-
-  INTERFACE
-    "stm32cubemx/Core/Src/system_stm32f4xx.c"
+target_sources(micro-os-plus-device-interface INTERFACE
+  "stm32cubemx/Core/Src/system_stm32f4xx.c"
 )
 
-target_compile_definitions(
-  micro-os-plus-device-interface
-
-  INTERFACE
-    # Already defined in the micro-os-plus-device-stm32f4-extras.
-    # ${xpack_device_compile_definition}
-    # ... add preprocessor macro definitions.
+target_compile_definitions(micro-os-plus-device-interface INTERFACE
+  # Already defined in the micro-os-plus-device-stm32f4-extras.
+  # ${xpack_device_compile_definition}
+  # None.
 )
 
-target_compile_options(
-  micro-os-plus-device-interface
-
-  INTERFACE
-    # ... perhaps ignore some warnings.
+target_compile_options(micro-os-plus-device-interface INTERFACE
+  # None.
 )
 
-target_link_libraries(
-  micro-os-plus-device-interface
+target_link_libraries(micro-os-plus-device-interface INTERFACE
+  micro-os-plus::devices-cortexm
 
-  INTERFACE
-    micro-os-plus::devices-cortexm
-
-    micro-os-plus::devices-${xpack_device_name}-extras
-    micro-os-plus::startup
+  micro-os-plus::devices-${xpack_device_name}-extras
+  micro-os-plus::startup
 )
 
 if (COMMAND xpack_display_target_lists)
@@ -116,90 +101,72 @@ message(VERBOSE "> micro-os-plus::device -> micro-os-plus-device-interface")
 
 add_library(micro-os-plus-platform-stm32f4discovery-interface INTERFACE EXCLUDE_FROM_ALL)
 
-  if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
+if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
 
-  target_include_directories(
-    micro-os-plus-platform-stm32f4discovery-interface
+  target_include_directories(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+    # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
+    "stm32cubemx/Core/Inc"
 
-    INTERFACE
-      # For the stm32f4xx_hal_conf.h, stm32f4xx_it.h, gpio.h, main.h
-      "stm32cubemx/Core/Inc"
-
-      # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
-      "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc"
+    # For the stm32f4xx_hal.h and stm32f4xx_hal_*.h
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Inc"
   )
 
-  target_sources(
-    micro-os-plus-platform-stm32f4discovery-interface
-
-    INTERFACE
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c
-    stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c
+  target_sources(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_cortex.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_dma_ex.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_exti.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ex.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_flash_ramfunc.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_gpio.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_pwr_ex.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_rcc_ex.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim.c"
+    "stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src/stm32f4xx_hal_tim_ex.c"
 
     # system_stm32f4xx.c is not here but in the device library.
 
     # These are not in the device library because they include
     # stm32f4xx_hal_conf.h, which is part of the platform.
-    stm32cubemx/Core/Src/gpio.c
-    stm32cubemx/Core/Src/main.c
-    stm32cubemx/Core/Src/stm32f4xx_hal_msp.c
-    stm32cubemx/Core/Src/stm32f4xx_it.c
-  )
-
-  endif()
-
-target_compile_definitions(
-  micro-os-plus-platform-stm32f4discovery-interface
-
-  INTERFACE
-    "${xpack_platform_compile_definition}"
-)
-
-if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
-
-  target_compile_definitions(
-    micro-os-plus-platform-stm32f4discovery-interface
-
-    INTERFACE
-      USE_HAL_DRIVER
+    "stm32cubemx/Core/Src/gpio.c"
+    "stm32cubemx/Core/Src/main.c"
+    "stm32cubemx/Core/Src/stm32f4xx_hal_msp.c"
+    "stm32cubemx/Core/Src/stm32f4xx_it.c"
   )
 
 endif()
 
-target_compile_options(
-  micro-os-plus-platform-stm32f4discovery-interface
-
-  INTERFACE
-    # To silence HAL warnings.
-    -Wno-padded
-    -Wno-switch-enum
-    -Wno-conversion
-    -Wno-redundant-decls
-    -Wno-switch-default
-    -Wno-unused-parameter
-
-    $<$<COMPILE_LANG_AND_ID:C,GNU>:-Wno-bad-function-cast>
+target_compile_definitions(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+  "${xpack_platform_compile_definition}"
 )
 
-target_link_libraries(
-  micro-os-plus-platform-stm32f4discovery-interface
+if(NOT PLATFORM_STM32F4DISCOVERY_WITHOUT_HAL)
 
-  INTERFACE
-    micro-os-plus::device
-    micro-os-plus::diag-trace
+  target_compile_definitions(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+    "USE_HAL_DRIVER"
+  )
+
+endif()
+
+target_compile_options(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+  # To silence HAL warnings.
+  -Wno-padded
+  -Wno-switch-enum
+  -Wno-conversion
+  -Wno-redundant-decls
+  -Wno-switch-default
+  -Wno-unused-parameter
+
+  $<$<COMPILE_LANG_AND_ID:C,GNU>:-Wno-bad-function-cast>
+)
+
+target_link_libraries(micro-os-plus-platform-stm32f4discovery-interface INTERFACE
+  micro-os-plus::device
+  micro-os-plus::diag-trace
 )
 
 if (COMMAND xpack_display_target_lists)
