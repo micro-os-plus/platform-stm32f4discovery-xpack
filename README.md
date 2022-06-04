@@ -106,12 +106,9 @@ Currently only the GPIO drivers are enabled.
 
 To integrate this package into user projects, consider the following details:
 
-#### Source folders
+#### Include folders
 
-- `stm32cubemx/Core/Src`
-- `stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src`
-
-##### Include folders
+The following folders should be passed to the compiler during the build:
 
 - `stm32cubemx/Core/Inc`
 - `stm32cubemx/Drivers/CMSIS/Device/ST/STM32F4xx/Include`
@@ -123,6 +120,13 @@ The header file to be included in user project is:
 ```c
 #include <stm32f4xx.h>
 ```
+
+#### Source files
+
+The source files to be added to the build are:
+
+- `stm32cubemx/Core/Src`
+- `stm32cubemx/Drivers/STM32F4xx_HAL_Driver/Src`
 
 #### Preprocessor definitions
 
