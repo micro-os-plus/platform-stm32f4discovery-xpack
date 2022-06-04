@@ -119,10 +119,6 @@ When the release is considered stable, promote it as `latest`:
 - `npm dist-tag add @micro-os-plus/platform-stm32f4discovery@3.3.1 latest`
 - `npm dist-tag ls @micro-os-plus/platform-stm32f4discovery`
 
-## Announce to the community
-
-Post an announcement to the forum.
-
 ## Share on Twitter
 
 - in a separate browser windows, open [TweetDeck](https://tweetdeck.twitter.com/)
