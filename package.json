@@ -15,10 +15,10 @@
     "type": "git",
     "url": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git/"
   },
+  "homepage": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/",
   "bugs": {
     "url": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/issues/"
   },
-  "homepage": "https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/",
   "keywords": [
     "xpack",
     "c++",
@@ -33,6 +33,15 @@
   },
   "license": "MIT",
   "config": {},
+  "dependencies": {},
+  "bundleDependencies": [],
   "devDependencies": {},
-  "xpack": {}
+  "xpack": {
+    "minimumXpmRequired": "0.14.0",
+    "dependencies": {},
+    "devDependencies": {},
+    "properties": {},
+    "actions": {},
+    "buildConfigurations": {}
+  }
 }
