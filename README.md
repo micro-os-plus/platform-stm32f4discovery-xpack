@@ -2,7 +2,7 @@
 [![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/micro-os-plus/platform-stm32f4discovery-xpack)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/tags/)
 [![npm (scoped)](https://img.shields.io/npm/v/@micro-os-plus/platform-stm32f4discovery.svg?color=blue)](https://www.npmjs.com/package/@micro-os-plus/platform-stm32f4discovery/)
 [![license](https://img.shields.io/github/license/micro-os-plus/platform-stm32f4discovery-xpack)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/blob/xpack/LICENSE)
-[![CI on Push](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/CI.yml/badge.svg)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/CI.yml)
+[![CI on Push](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/ci.yml)
 
 # A source library xPack with the µOS++ STM32F4DISCOVERY board support files
 
