@@ -14,7 +14,7 @@
 
 # This file is intended to be consumed by applications with:
 #
-# `subdir('xpacks/micro-os-plus-platform-stm32f4discovery')`
+# `subdir('xpacks/@micro-os-plus/platform-stm32f4discovery')`
 #
 # The result is a dependency that can be added to the linker with:
 #

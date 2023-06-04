@@ -14,7 +14,7 @@
 
 # This file is intended to be consumed by applications with:
 #
-# `add_subdirectory("xpacks/micro-os-plus-platform-stm32f4discovery")`
+# `add_subdirectory("xpacks/@micro-os-plus/platform-stm32f4discovery")`
 #
 # The result is a static library that can be added to the linker with:
 #

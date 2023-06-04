@@ -65,7 +65,7 @@ xpm init # Unless a package.json is already present
 
 xpm install @micro-os-plus/platform-stm32f4discovery@latest
 
-ls -l xpacks/micro-os-plus-platform-stm32f4discovery
+ls -l xpacks/@micro-os-plus/platform-stm32f4discovery
 ```
 
 ### Git submodule
@@ -79,7 +79,7 @@ git init # Unless already a Git project
 mkdir -p xpacks
 
 git submodule add https://github.com/micro-os-plus/platform-stm32f4discovery-xpack.git \
-  xpacks/micro-os-plus-platform-stm32f4discovery
+  xpacks/@micro-os-plus/platform-stm32f4discovery
 ```
 
 ## Branches
