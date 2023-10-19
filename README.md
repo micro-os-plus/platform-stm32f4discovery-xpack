@@ -4,7 +4,7 @@
 [![license](https://img.shields.io/github/license/micro-os-plus/platform-stm32f4discovery-xpack)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/blob/xpack/LICENSE)
 [![CI on Push](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/ci.yml/badge.svg)](https://github.com/micro-os-plus/platform-stm32f4discovery-xpack/actions/workflows/ci.yml)
 
-# A source library xPack with the µOS++ STM32F4DISCOVERY board support files
+# A source code library with the µOS++ STM32F4DISCOVERY board support files
 
 The [STM32F4DISCOVERY](https://www.st.com/en/evaluation-tools/stm32f4discovery.html)
 board is a development board from ST MIcroelectronics with
@@ -192,8 +192,8 @@ are:
 
 ## License
 
-The original content is released under the
-[MIT License](https://opensource.org/licenses/MIT/),
+Unless otherwise stated, the content is released under the terms of the
+[MIT License](https://opensource.org/licenses/mit/),
 with all rights reserved to
 [Liviu Ionescu](https://github.com/ilg-ul).
 
